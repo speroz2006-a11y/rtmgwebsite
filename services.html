@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services — RealTime Marketing Group</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #2592D8;
+      --blue-hover: #1A7CBF;
+      --blue-light: rgba(37,146,216,0.10);
+      --navy: #094878;
+      --navy-deep: #07334F;
+      --navy-darker: #051F30;
+      --bg: #FFFFFF;
+      --bg-muted: #F6F9FC;
+      --bg-subtle: #EDF3F9;
+      --text-1: #0C1929;
+      --text-2: #3D5266;
+      --text-3: #6B8499;
+      --border: rgba(9,72,120,0.09);
+      --border-2: rgba(9,72,120,0.16);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(9,72,120,0.08),0 1px 3px rgba(9,72,120,0.05);
+      --shadow-lg: 0 12px 32px rgba(9,72,120,0.12),0 4px 8px rgba(9,72,120,0.06);
+      --shadow-xl: 0 24px 56px rgba(9,72,120,0.16),0 8px 16px rgba(9,72,120,0.08);
+      --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:20px; --r-2xl:28px; --r-pill:9999px;
+      --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;
+      --sp-6:24px;--sp-7:32px;--sp-8:48px;--sp-9:64px;--sp-10:80px;--sp-11:96px;
+      --fs-xs:.75rem;--fs-sm:.875rem;--fs-base:1rem;--fs-lg:1.125rem;--fs-xl:1.25rem;
+      --fs-2xl:1.5rem;--fs-3xl:1.875rem;--fs-4xl:2.25rem;--fs-5xl:3rem;--fs-6xl:3.75rem;
+      --ease-out:cubic-bezier(0.22,1,0.36,1);
+      --ease-in-out:cubic-bezier(0.4,0,0.2,1);
+      --dur-fast:150ms;--dur-base:220ms;--dur-slow:350ms;
+      --max-w:1200px;--nav-h:90px;
+    }
+
+    html { scroll-behavior:smooth; }
+    body { font-family:'Inter',sans-serif;color:var(--text-2);background:var(--bg);
+      -webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden; }
+    h1,h2,h3,h4,h5 { font-family:'Space Grotesk',sans-serif;color:var(--text-1);
+      line-height:1.1;letter-spacing:-.025em; }
+    img { max-width:100%;display:block; }
+    a { color:inherit; }
+    ul { list-style:none; }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width:var(--max-w);margin:0 auto;padding:0 var(--sp-5); }
+    @media(min-width:768px){ .wrap { padding:0 var(--sp-7); } }
+    .section { padding:var(--sp-10) 0; }
+
+    /* ── ICONS ── */
+    .icon { width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;
+      stroke-linecap:round;stroke-linejoin:round;flex-shrink:0; }
+    .icon-sm { width:16px;height:16px; }
+    .icon-lg { width:24px;height:24px; }
+
+    /* ── BUTTONS ── */
+    .btn { display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+      min-height:44px;padding:0 var(--sp-6);border-radius:var(--r-md);
+      font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:var(--fs-base);
+      text-decoration:none;cursor:pointer;border:1.5px solid transparent;
+      transition:all var(--dur-fast) var(--ease-in-out);white-space:nowrap; }
+    .btn-primary { background:var(--blue);color:#fff;border-color:var(--blue); }
+    .btn-primary:hover { background:var(--blue-hover);border-color:var(--blue-hover);
+      transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,146,216,.35); }
+    .btn-outline { background:transparent;color:var(--text-1);border-color:var(--border-2); }
+    .btn-outline:hover { border-color:var(--blue);color:var(--blue);background:var(--blue-light); }
+    .btn-outline-white { background:transparent;color:#fff;border-color:rgba(255,255,255,.3); }
+    .btn-outline-white:hover { background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.65); }
+    .btn-lg { min-height:52px;padding:0 var(--sp-7);font-size:var(--fs-lg); }
+    .btn-sm { min-height:36px;padding:0 var(--sp-4);font-size:var(--fs-sm); }
+
+    /* ── EYEBROW ── */
+    .eyebrow { display:inline-flex;align-items:center;gap:var(--sp-2);
+      font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+      color:var(--blue);font-family:'Space Grotesk',sans-serif; }
+    .eyebrow::before { content:'';display:inline-block;width:18px;height:2px;
+      background:linear-gradient(90deg,var(--blue),transparent);border-radius:2px; }
+    .on-dark .eyebrow { color:rgba(125,212,252,.9); }
+    .on-dark .eyebrow::before { background:linear-gradient(90deg,rgba(125,212,252,.9),transparent); }
+
+    /* ── NAV ── */
+    .nav { position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);
+      transition:background 320ms cubic-bezier(0.4,0,0.2,1),
+        box-shadow 320ms cubic-bezier(0.4,0,0.2,1); }
+    .nav.scrolled { background:rgba(255,255,255,.96);
+      backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+      box-shadow:0 1px 0 var(--border),0 2px 12px rgba(0,0,0,.06); }
+    .nav-inner { max-width:var(--max-w);height:100%;margin:0 auto;padding:0 var(--sp-5);
+      display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4); }
+    @media(min-width:768px){ .nav-inner { padding:0 var(--sp-7); } }
+    .nav-logo { text-decoration:none;display:inline-flex;align-items:center; }
+    .nav-logo-img { height:calc(var(--nav-h) - 24px);max-height:68px;width:auto;
+      display:block;object-fit:contain; }
+    .nav-links { display:none;gap:var(--sp-7);align-items:center; }
+    @media(min-width:1024px){ .nav-links { display:flex; } }
+    .nav-links a { font-family:'Space Grotesk',sans-serif;font-size:var(--fs-sm);font-weight:600;
+      color:rgba(255,255,255,.82);text-decoration:none;
+      transition:color 320ms cubic-bezier(0.4,0,0.2,1);letter-spacing:.01em; }
+    .nav-links a:hover { color:#fff; }
+    .nav-links a.active { color:#fff; }
+    .nav.scrolled .nav-links a { color:var(--text-2); }
+    .nav.scrolled .nav-links a:hover { color:var(--navy); }
+    .nav.scrolled .nav-links a.active { color:var(--blue); }
+    .nav-cta { display:none; }
+    @media(min-width:1024px){ .nav-cta { display:inline-flex; } }
+    .nav-toggle { display:flex;align-items:center;justify-content:center;
+      width:44px;height:44px;background:rgba(255,255,255,.12);
+      border:1.5px solid rgba(255,255,255,.22);border-radius:var(--r-md);
+      color:#fff;cursor:pointer;
+      transition:background 320ms cubic-bezier(0.4,0,0.2,1),
+        border-color 320ms cubic-bezier(0.4,0,0.2,1),color 320ms cubic-bezier(0.4,0,0.2,1); }
+    .nav-toggle:hover { background:rgba(255,255,255,.2); }
+    .nav.scrolled .nav-toggle { background:var(--bg-muted);border-color:var(--border-2);color:var(--navy); }
+    .nav.scrolled .nav-toggle:hover { background:var(--bg-subtle); }
+    @media(min-width:1024px){ .nav-toggle { display:none; } }
+    .mobile-drawer { position:fixed;top:var(--nav-h);left:0;right:0;
+      background:var(--bg);border-bottom:1px solid var(--border);
+      box-shadow:var(--shadow-lg);padding:var(--sp-5);
+      transform:translateY(-200%);visibility:hidden;
+      transition:transform var(--dur-slow) var(--ease-out),visibility 0s var(--dur-slow);
+      z-index:199; }
+    .mobile-drawer[data-open="true"] { transform:translateY(0);visibility:visible;
+      transition:transform var(--dur-slow) var(--ease-out),visibility 0s 0s; }
+    .mobile-drawer ul { display:flex;flex-direction:column;gap:var(--sp-1); }
+    .mobile-drawer a { display:flex;align-items:center;padding:var(--sp-3) var(--sp-4);
+      border-radius:var(--r-md);color:var(--text-1);text-decoration:none;
+      font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:var(--fs-base);
+      min-height:44px;transition:background var(--dur-fast); }
+    .mobile-drawer a:hover { background:var(--bg-muted);color:var(--blue); }
+    .mobile-drawer .btn { width:100%;margin-top:var(--sp-3);justify-content:center; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity:0;transform:translateY(22px);
+      transition:opacity 580ms var(--ease-out),transform 580ms var(--ease-out); }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+    .reveal-d1 { transition-delay:100ms; }
+    .reveal-d2 { transition-delay:200ms; }
+    .reveal-d3 { transition-delay:300ms; }
+
+    /* ── PAGE HERO ── */
+    .page-hero { position:relative;
+      padding:calc(var(--nav-h) + var(--sp-11)) 0 var(--sp-11);
+      background:linear-gradient(155deg,var(--navy-darker) 0%,var(--navy-deep) 45%,#0B5F96 100%);
+      overflow:hidden; }
+    .page-hero::before { content:'';position:absolute;inset:0;
+      background-image:radial-gradient(rgba(37,146,216,.15) 1px,transparent 1px);
+      background-size:28px 28px;
+      mask-image:radial-gradient(ellipse 85% 85% at 50% 0%,black 25%,transparent 100%);
+      -webkit-mask-image:radial-gradient(ellipse 85% 85% at 50% 0%,black 25%,transparent 100%); }
+    .hero-glow { position:absolute;width:700px;height:700px;border-radius:50%;
+      background:radial-gradient(circle,rgba(37,146,216,.18) 0%,transparent 70%);
+      top:-200px;right:-100px;pointer-events:none; }
+    .page-hero-inner { position:relative;z-index:1;max-width:760px;
+      margin:0 auto;padding:0 var(--sp-5);text-align:center; }
+    @media(min-width:768px){ .page-hero-inner { padding:0 var(--sp-7); } }
+    .page-hero-inner .eyebrow { margin-bottom:var(--sp-4); }
+    .page-hero h1 { font-size:clamp(2.4rem,5vw,4rem);font-weight:800;
+      color:#fff;line-height:1.06;letter-spacing:-.035em;margin-bottom:var(--sp-6); }
+    .page-hero h1 .grad {
+      background:linear-gradient(95deg,#7DD4FC 0%,#38BDF8 50%,#60A5FA 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .page-hero p { font-size:clamp(1rem,1.4vw,1.15rem);color:rgba(255,255,255,.70);
+      line-height:1.75;max-width:600px;margin:0 auto var(--sp-8); }
+    .hero-nav-pills { display:flex;flex-wrap:wrap;gap:var(--sp-2);justify-content:center; }
+    .hero-pill { display:inline-flex;align-items:center;gap:var(--sp-2);
+      padding:8px var(--sp-4);border-radius:var(--r-pill);
+      border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);
+      font-family:'Space Grotesk',sans-serif;font-size:var(--fs-sm);font-weight:600;
+      color:rgba(255,255,255,.82);text-decoration:none;
+      transition:background var(--dur-fast) var(--ease-in-out),
+        border-color var(--dur-fast) var(--ease-in-out); }
+    .hero-pill:hover { background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff; }
+    .hero-pill svg { opacity:.7; }
+
+    /* ── SECTION HEADER ── */
+    .section-header { text-align:center;margin-bottom:var(--sp-9); }
+    .section-header .eyebrow { margin-bottom:var(--sp-4); }
+    .section-header h2 { font-size:clamp(1.75rem,3.5vw,2.75rem);font-weight:800;
+      margin-bottom:var(--sp-4); }
+    .section-header p { font-size:var(--fs-lg);color:var(--text-3);
+      max-width:560px;margin:0 auto;line-height:1.7; }
+
+    /* ── SERVICE BLOCKS ── */
+    .service-block { padding:var(--sp-10) 0;border-bottom:1px solid var(--border); }
+    .service-block:last-child { border-bottom:none; }
+    .service-block-inner { display:grid;grid-template-columns:1fr;gap:var(--sp-8);
+      align-items:start; }
+    @media(min-width:1024px){ .service-block-inner { grid-template-columns:1fr 1fr;gap:var(--sp-10); } }
+    .service-block.flip @media(min-width:1024px){ .service-content { order:2; } .service-detail { order:1; } }
+    .service-num { font-family:'Space Grotesk',sans-serif;font-size:var(--fs-xs);
+      font-weight:700;letter-spacing:.12em;color:var(--text-3);margin-bottom:var(--sp-3); }
+    .service-tag { display:inline-flex;align-items:center;gap:var(--sp-2);
+      padding:6px var(--sp-4);border-radius:var(--r-pill);
+      background:var(--blue-light);border:1px solid rgba(37,146,216,.2);
+      font-family:'Space Grotesk',sans-serif;font-size:var(--fs-xs);font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;color:var(--blue);
+      margin-bottom:var(--sp-5); }
+    .service-icon-wrap { width:60px;height:60px;border-radius:var(--r-xl);
+      background:linear-gradient(135deg,rgba(37,146,216,.14),rgba(9,72,120,.07));
+      display:flex;align-items:center;justify-content:center;
+      color:var(--blue);margin-bottom:var(--sp-5); }
+    .service-content h2 { font-size:clamp(1.6rem,3vw,2.25rem);font-weight:800;
+      margin-bottom:var(--sp-4);line-height:1.1; }
+    .service-content p { font-size:var(--fs-lg);color:var(--text-2);
+      line-height:1.75;margin-bottom:var(--sp-6); }
+    .service-checklist { display:flex;flex-direction:column;gap:var(--sp-3);
+      margin-bottom:var(--sp-7); }
+    .service-checklist li { display:flex;align-items:flex-start;gap:var(--sp-3);
+      font-size:var(--fs-base);color:var(--text-2); }
+    .check-icon { width:20px;height:20px;border-radius:50%;
+      background:var(--blue-light);border:1px solid rgba(37,146,216,.2);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--blue);flex-shrink:0;margin-top:2px; }
+    .service-detail { display:flex;flex-direction:column;gap:var(--sp-4); }
+    .detail-card { border-radius:var(--r-xl);padding:var(--sp-6);
+      border:1.5px solid var(--border);position:relative;overflow:hidden;
+      transition:border-color var(--dur-base),box-shadow var(--dur-base); }
+    .detail-card:hover { border-color:rgba(37,146,216,.25);box-shadow:var(--shadow-md); }
+    .detail-card::before,.detail-card::after { content:'';position:absolute;
+      width:14px;height:14px;pointer-events:none; }
+    .detail-card::before { top:0;left:0;border-top:1.5px solid rgba(37,146,216,.2);
+      border-left:1.5px solid rgba(37,146,216,.2); }
+    .detail-card::after { top:0;right:0;border-top:1.5px solid rgba(37,146,216,.2);
+      border-right:1.5px solid rgba(37,146,216,.2); }
+    .detail-card-label { font-family:'Space Grotesk',sans-serif;font-size:var(--fs-xs);
+      font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+      color:var(--text-3);margin-bottom:var(--sp-3); }
+    .detail-card h4 { font-size:var(--fs-lg);font-weight:700;
+      color:var(--text-1);margin-bottom:var(--sp-2); }
+    .detail-card p { font-size:var(--fs-sm);color:var(--text-3);line-height:1.65; }
+    .detail-card-dark { background:var(--navy-darker);border-color:rgba(255,255,255,.08); }
+    .detail-card-dark::before { border-color:rgba(255,255,255,.1); }
+    .detail-card-dark::after { border-color:rgba(255,255,255,.1); }
+    .detail-card-dark .detail-card-label { color:rgba(255,255,255,.4); }
+    .detail-card-dark h4 { color:#fff; }
+    .detail-card-dark p { color:rgba(255,255,255,.55); }
+    .stat-row { display:flex;gap:var(--sp-5); }
+    .stat-item { flex:1; }
+    .stat-num { font-family:'Space Grotesk',sans-serif;font-size:var(--fs-3xl);
+      font-weight:800;letter-spacing:-.04em;line-height:1;
+      background:linear-gradient(140deg,#fff 20%,rgba(56,189,248,.75) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .stat-label { font-size:var(--fs-xs);color:rgba(255,255,255,.45);
+      font-weight:500;letter-spacing:.01em;margin-top:4px; }
+    .platform-tags { display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-4); }
+    .platform-tag { display:inline-flex;align-items:center;gap:6px;
+      padding:6px var(--sp-3);border-radius:var(--r-sm);
+      background:var(--bg-muted);border:1px solid var(--border);
+      font-family:'Space Grotesk',sans-serif;font-size:var(--fs-xs);font-weight:600;
+      color:var(--text-2);letter-spacing:.01em; }
+    .platform-dot { width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0; }
+
+    /* ── FLIP LAYOUT ── */
+    .flip .service-content { order:1; }
+    .flip .service-detail { order:2; }
+    @media(min-width:1024px){
+      .flip .service-content { order:2; }
+      .flip .service-detail { order:1; }
+    }
+
+    /* ── PROCESS SECTION ── */
+    .process-section { background:var(--bg-muted);padding:var(--sp-10) 0; }
+    .process-grid { display:grid;gap:var(--sp-5);grid-template-columns:1fr; }
+    @media(min-width:640px){ .process-grid { grid-template-columns:1fr 1fr; } }
+    @media(min-width:1024px){ .process-grid { grid-template-columns:repeat(4,1fr); } }
+    .process-step { position:relative;padding:var(--sp-6);
+      background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-xl);
+      transition:box-shadow var(--dur-base),border-color var(--dur-base),transform var(--dur-base); }
+    .process-step:hover { box-shadow:var(--shadow-md);border-color:rgba(37,146,216,.2);
+      transform:translateY(-2px); }
+    .process-step::before,.process-step::after { content:'';position:absolute;
+      width:14px;height:14px;pointer-events:none; }
+    .process-step::before { top:0;left:0;border-top:1.5px solid rgba(37,146,216,.2);
+      border-left:1.5px solid rgba(37,146,216,.2); }
+    .process-step::after { top:0;right:0;border-top:1.5px solid rgba(37,146,216,.2);
+      border-right:1.5px solid rgba(37,146,216,.2); }
+    .process-step-num { font-family:'Space Grotesk',sans-serif;
+      font-size:var(--fs-4xl);font-weight:800;letter-spacing:-.05em;line-height:1;
+      color:var(--border-2);margin-bottom:var(--sp-5); }
+    .process-step h3 { font-size:var(--fs-xl);font-weight:700;
+      margin-bottom:var(--sp-3);color:var(--text-1); }
+    .process-step p { font-size:var(--fs-sm);color:var(--text-3);line-height:1.7; }
+
+    /* ── FAQ SECTION ── */
+    .faq-grid { display:grid;gap:var(--sp-4);
+      grid-template-columns:1fr; }
+    @media(min-width:768px){ .faq-grid { grid-template-columns:1fr 1fr; } }
+    .faq-item { padding:var(--sp-6);border:1.5px solid var(--border);
+      border-radius:var(--r-xl);transition:border-color var(--dur-base),box-shadow var(--dur-base); }
+    .faq-item:hover { border-color:rgba(37,146,216,.2);box-shadow:var(--shadow-sm); }
+    .faq-item h4 { font-size:var(--fs-base);font-weight:700;color:var(--text-1);
+      margin-bottom:var(--sp-3); }
+    .faq-item p { font-size:var(--fs-sm);color:var(--text-3);line-height:1.7; }
+
+    /* ── CTA ── */
+    .cta-section { position:relative;overflow:hidden;
+      background:linear-gradient(155deg,var(--navy-darker) 0%,var(--navy-deep) 45%,#0B5F96 100%);
+      padding:var(--sp-11) 0;text-align:center; }
+    .cta-section::before { content:'';position:absolute;inset:0;
+      background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);
+      background-size:24px 24px; }
+    .cta-glow { position:absolute;width:600px;height:600px;border-radius:50%;
+      background:radial-gradient(circle,rgba(37,146,216,.18) 0%,transparent 70%);
+      top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none; }
+    .cta-inner { position:relative;z-index:1;max-width:640px;margin:0 auto;
+      padding:0 var(--sp-5); }
+    @media(min-width:768px){ .cta-inner { padding:0 var(--sp-7); } }
+    .cta-section .eyebrow { margin-bottom:var(--sp-5); }
+    .cta-section h2 { font-size:clamp(2rem,4vw,3rem);font-weight:800;color:#fff;
+      margin-bottom:var(--sp-5);letter-spacing:-.03em;line-height:1.08; }
+    .cta-section h2 .grad {
+      background:linear-gradient(95deg,#7DD4FC 0%,#38BDF8 50%,#60A5FA 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .cta-section p { font-size:var(--fs-lg);color:rgba(255,255,255,.70);
+      line-height:1.75;margin-bottom:var(--sp-7); }
+    .cta-actions { display:flex;gap:var(--sp-3);justify-content:center;flex-wrap:wrap; }
+
+    /* ── FOOTER ── */
+    .footer { background:var(--navy-darker);padding:var(--sp-10) 0 var(--sp-7); }
+    .footer-grid { display:grid;gap:var(--sp-8);grid-template-columns:1fr;
+      margin-bottom:var(--sp-8); }
+    @media(min-width:768px){ .footer-grid { grid-template-columns:2fr 1fr 1fr 1fr; } }
+    .footer-brand .footer-logo { height:52px;margin-bottom:var(--sp-4); }
+    .footer-tagline { font-size:var(--fs-sm);color:rgba(255,255,255,.45);line-height:1.7;max-width:280px; }
+    .footer-col h4 { font-family:'Space Grotesk',sans-serif;font-size:var(--fs-xs);
+      font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      color:rgba(255,255,255,.35);margin-bottom:var(--sp-5); }
+    .footer-col ul { display:flex;flex-direction:column;gap:var(--sp-3); }
+    .footer-col a { font-size:var(--fs-sm);color:rgba(255,255,255,.55);
+      text-decoration:none;transition:color var(--dur-fast); }
+    .footer-col a:hover { color:#fff; }
+    .footer-bottom { padding-top:var(--sp-6);border-top:1px solid rgba(255,255,255,.07);
+      display:flex;flex-wrap:wrap;gap:var(--sp-4);justify-content:space-between;
+      font-size:var(--fs-xs);color:rgba(255,255,255,.28); }
+
+    @media(prefers-reduced-motion:reduce){ *,*::before,*::after {
+      transition-duration:.01ms!important;animation-duration:.01ms!important; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="RealTime Marketing Group home">
+      <img src="RTMG Logo.png" alt="RealTime Marketing Group" class="nav-logo-img">
+    </a>
+    <ul class="nav-links">
+      <li><a href="services.html" class="active">Services</a></li>
+      <li><a href="index.html#results">Results</a></li>
+      <li><a href="mission.html">Who We Are</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="index.html#contact" class="btn btn-primary btn-sm nav-cta">Get Started</a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"
+      aria-controls="mobile-drawer" type="button">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+<div class="mobile-drawer" id="mobile-drawer" data-open="false" role="dialog" aria-modal="true">
+  <ul>
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="index.html#results">Results</a></li>
+    <li><a href="mission.html">Who We Are</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <a href="index.html#contact" class="btn btn-primary">Get Started</a>
+</div>
+
+<main>
+
+  <!-- HERO -->
+  <section class="page-hero" aria-label="Our services">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="page-hero-inner">
+      <div class="eyebrow on-dark reveal">What We Do</div>
+      <h1 class="reveal reveal-d1">Full-spectrum digital.<br><span class="grad">Zero guesswork.</span></h1>
+      <p class="reveal reveal-d2">Every service we offer is tied to outcomes you can measure — not metrics that look good in a deck. We're specialists in each channel, not generalists spread thin across all of them.</p>
+      <div class="hero-nav-pills reveal reveal-d3">
+        <a href="#paid-search" class="hero-pill">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Paid Search
+        </a>
+        <a href="#social" class="hero-pill">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Social Advertising
+        </a>
+        <a href="#content" class="hero-pill">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Content Strategy
+        </a>
+        <a href="#analytics" class="hero-pill">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Analytics
+        </a>
+        <a href="#websites" class="hero-pill">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Website Design
+        </a>
+        <a href="#ai-agents" class="hero-pill">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/><path d="M9 18h6"/></svg>
+          AI Agents
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       SERVICE 01 — PAID SEARCH
+  ═════════════════════════════════════════════ -->
+  <section class="service-block section" id="paid-search">
+    <div class="wrap">
+      <div class="service-block-inner">
+        <div class="service-content reveal">
+          <div class="service-num">01 / 06</div>
+          <div class="service-tag">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Paid Search
+          </div>
+          <h2>Capture demand at the exact moment it exists.</h2>
+          <p>When someone searches for what you offer, they're already raising their hand. Our paid search campaigns make sure you're there — with the right message, the right bid, and a landing page built to convert.</p>
+          <ul class="service-checklist">
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Keyword strategy, intent mapping, and negative match management
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Ad copy testing and Quality Score optimization
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Smart bidding strategy and automated rules
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Full conversion tracking and attribution setup
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Weekly performance review with clear reporting
+            </li>
+          </ul>
+          <div class="platform-tags">
+            <span class="platform-tag"><span class="platform-dot"></span>Google Ads</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Microsoft Ads</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Google Shopping</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Performance Max</span>
+          </div>
+        </div>
+        <div class="service-detail reveal reveal-d1">
+          <div class="detail-card detail-card-dark">
+            <div class="detail-card-label">Typical Results</div>
+            <div class="stat-row">
+              <div class="stat-item">
+                <div class="stat-num">3.8×</div>
+                <div class="stat-label">Average ROAS</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">40%</div>
+                <div class="stat-label">Lower CPA vs. prior agency</div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Best For</div>
+            <h4>Businesses with clear purchase intent</h4>
+            <p>Paid search works best when people are already searching for your product or service. It's the highest-intent channel available — and the easiest to measure ROI on.</p>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Our Edge</div>
+            <h4>We write ads that actually convert</h4>
+            <p>Most agencies optimize bids. We obsess over the full path — ad copy, landing page alignment, and conversion rate — so every click has the best possible chance of becoming a customer.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       SERVICE 02 — SOCIAL ADVERTISING
+  ═════════════════════════════════════════════ -->
+  <section class="service-block section flip" id="social" style="background:var(--bg-muted);">
+    <div class="wrap">
+      <div class="service-block-inner">
+        <div class="service-detail reveal">
+          <div class="detail-card detail-card-dark">
+            <div class="detail-card-label">Typical Results</div>
+            <div class="stat-row">
+              <div class="stat-item">
+                <div class="stat-num">2.9×</div>
+                <div class="stat-label">Average ROAS</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">3×</div>
+                <div class="stat-label">Increase in qualified reach</div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Creative Strategy</div>
+            <h4>Creative that stops the scroll</h4>
+            <p>We develop ad creative concepts tied to your audience's motivations — not just your product's features. Static, video, carousel, and UGC-style formats tested systematically.</p>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Audience Targeting</div>
+            <h4>Behavioral signals over broad demographics</h4>
+            <p>We build layered audiences using first-party data, lookalikes, and behavioral intent signals — not just age and gender buckets that everyone else is targeting.</p>
+          </div>
+        </div>
+        <div class="service-content reveal reveal-d1">
+          <div class="service-num">02 / 06</div>
+          <div class="service-tag">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            Social Advertising
+          </div>
+          <h2>Put your brand where attention actually lives.</h2>
+          <p>Social platforms give you access to audiences who don't know they need you yet — but will the moment they see the right creative. We pair precise targeting with creative that converts, not just impressions that burn budget.</p>
+          <ul class="service-checklist">
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Campaign architecture, audience strategy, and funnel structure
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Creative concepting, copy, and systematic A/B testing
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Retargeting and lookalike audience development
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Pixel setup, catalog integration, and conversion API
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Ongoing creative refresh to combat ad fatigue
+            </li>
+          </ul>
+          <div class="platform-tags">
+            <span class="platform-tag"><span class="platform-dot"></span>Meta (Facebook &amp; Instagram)</span>
+            <span class="platform-tag"><span class="platform-dot"></span>TikTok Ads</span>
+            <span class="platform-tag"><span class="platform-dot"></span>LinkedIn Ads</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Pinterest Ads</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       SERVICE 03 — CONTENT STRATEGY
+  ═════════════════════════════════════════════ -->
+  <section class="service-block section" id="content">
+    <div class="wrap">
+      <div class="service-block-inner">
+        <div class="service-content reveal">
+          <div class="service-num">03 / 06</div>
+          <div class="service-tag">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Content Strategy
+          </div>
+          <h2>Build audiences that compound in value over time.</h2>
+          <p>Paid media rents attention. Content owns it. We build content systems that generate organic reach, build trust at scale, and create assets that keep delivering long after the campaign ends.</p>
+          <ul class="service-checklist">
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              SEO content strategy, keyword mapping, and editorial calendar
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Long-form content, landing page copy, and conversion writing
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Email marketing sequences and newsletter strategy
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Organic social content and community management
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Content performance tracking and monthly audits
+            </li>
+          </ul>
+          <div class="platform-tags">
+            <span class="platform-tag"><span class="platform-dot"></span>Google Search</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Email / CRM</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Instagram &amp; TikTok</span>
+            <span class="platform-tag"><span class="platform-dot"></span>YouTube</span>
+          </div>
+        </div>
+        <div class="service-detail reveal reveal-d1">
+          <div class="detail-card detail-card-dark">
+            <div class="detail-card-label">Typical Results</div>
+            <div class="stat-row">
+              <div class="stat-item">
+                <div class="stat-num">4×</div>
+                <div class="stat-label">Organic reach increase</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">60%</div>
+                <div class="stat-label">Lower cost per lead vs. paid only</div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Why It Matters</div>
+            <h4>Content is the multiplier for everything else</h4>
+            <p>Strong content makes your paid ads cheaper, your email lists more engaged, and your brand more trusted. It's the asset that makes every other channel work harder.</p>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Our Approach</div>
+            <h4>Systems over single pieces</h4>
+            <p>We don't just write blog posts. We build content systems — repeatable processes that produce consistent output across channels, matched to your audience's actual search behavior and buying journey.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       SERVICE 04 — ANALYTICS & ATTRIBUTION
+  ═════════════════════════════════════════════ -->
+  <section class="service-block section flip" id="analytics" style="background:var(--bg-muted);">
+    <div class="wrap">
+      <div class="service-block-inner">
+        <div class="service-detail reveal">
+          <div class="detail-card detail-card-dark">
+            <div class="detail-card-label">What You Get</div>
+            <div class="stat-row">
+              <div class="stat-item">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Spend visibility</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">Clear</div>
+                <div class="stat-label">Plain-English reporting</div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Tracking Setup</div>
+            <h4>No black boxes — ever</h4>
+            <p>We audit and rebuild your tracking foundation if needed: GA4, GTM, conversion APIs, UTM frameworks, and CRM integration so every touchpoint is captured accurately.</p>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Transparency</div>
+            <h4>Data that leads to decisions</h4>
+            <p>Every report we share comes with plain-English commentary on what's working, what's not, and what we're doing about it — no raw numbers dropped without context.</p>
+          </div>
+        </div>
+        <div class="service-content reveal reveal-d1">
+          <div class="service-num">04 / 06</div>
+          <div class="service-tag">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Analytics &amp; Attribution
+          </div>
+          <h2>Know exactly what's driving growth — and what isn't.</h2>
+          <p>Most marketing reporting tells you what happened. Ours tells you why, what to do next, and how confident to be in the numbers. We build the infrastructure to make your data trustworthy, then use it to make every campaign smarter.</p>
+          <ul class="service-checklist">
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              GA4 implementation, audit, and cleanup
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Google Tag Manager setup and custom event tracking
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Multi-touch attribution modeling
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Custom reporting dashboards and platform-native analytics
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Weekly reporting with action-oriented commentary
+            </li>
+          </ul>
+          <div class="platform-tags">
+            <span class="platform-tag"><span class="platform-dot"></span>Google Analytics 4</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Google Tag Manager</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Meta Pixel / CAPI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       SERVICE 05 — WEBSITE DESIGN & DEVELOPMENT
+  ═════════════════════════════════════════════ -->
+  <section class="service-block section" id="websites">
+    <div class="wrap">
+      <div class="service-block-inner">
+        <div class="service-content reveal">
+          <div class="service-num">05 / 06</div>
+          <div class="service-tag">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Website Design &amp; Development
+          </div>
+          <h2>A site built to convert, not just to exist.</h2>
+          <p>Your website is where every campaign lands — it's the make-or-break moment after someone clicks your ad or finds you in search. We build fast, clean, conversion-focused websites that are designed around your audience and optimized for the traffic you're driving.</p>
+          <ul class="service-checklist">
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Custom design built around your brand and conversion goals
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Mobile-first, responsive layouts that work on every device
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Landing pages built specifically for paid media campaigns
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              SEO-ready structure with proper on-page optimization
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Full tracking integration — GA4, pixels, and conversion events
+            </li>
+          </ul>
+          <div class="platform-tags">
+            <span class="platform-tag"><span class="platform-dot"></span>Custom HTML / CSS / JS</span>
+            <span class="platform-tag"><span class="platform-dot"></span>WordPress</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Shopify</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Landing Pages</span>
+          </div>
+        </div>
+        <div class="service-detail reveal reveal-d1">
+          <div class="detail-card detail-card-dark">
+            <div class="detail-card-label">What We Build</div>
+            <div class="stat-row">
+              <div class="stat-item">
+                <div class="stat-num">Fast</div>
+                <div class="stat-label">Optimized for Core Web Vitals</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">Built</div>
+                <div class="stat-label">To convert, not just impress</div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Why It Matters</div>
+            <h4>A bad site kills a great campaign</h4>
+            <p>We've seen too many strong campaigns underperform because the landing experience let visitors down. When we manage your ads and your site together, every element is aligned toward the same outcome.</p>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Our Approach</div>
+            <h4>Designed for the traffic you're sending</h4>
+            <p>We build websites the way we build campaigns — starting with the audience, the goal, and the message. Paid search visitors land differently than organic ones. We design for both.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       SERVICE 06 — AI AGENT SETUP
+  ═════════════════════════════════════════════ -->
+  <section class="service-block section" id="ai-agents" style="background:var(--bg-muted);">
+    <div class="wrap">
+      <div class="service-block-inner">
+        <div class="service-detail reveal">
+          <div class="detail-card detail-card-dark">
+            <div class="detail-card-label">What We Build</div>
+            <div class="stat-row">
+              <div class="stat-item">
+                <div class="stat-num">Custom</div>
+                <div class="stat-label">Built for your workflow</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">Always on</div>
+                <div class="stat-label">Works while you sleep</div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Why It Matters</div>
+            <h4>AI that actually does the work</h4>
+            <p>Most businesses dabble with AI tools but never wire them into a real workflow. We build agents that integrate with your existing systems and handle real, repeatable tasks — so your team focuses on what only humans can do.</p>
+          </div>
+          <div class="detail-card">
+            <div class="detail-card-label">Our Approach</div>
+            <h4>Start with the bottleneck, not the technology</h4>
+            <p>We identify where your team is spending time on tasks that can be automated, then design and deploy agents that handle them end-to-end — with the right guardrails and handoffs built in from day one.</p>
+          </div>
+        </div>
+        <div class="service-content reveal reveal-d1">
+          <div class="service-num">06 / 06</div>
+          <div class="service-tag">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/><path d="M9 18h6"/></svg>
+            AI Agent Setup
+          </div>
+          <h2>Automate the work that's slowing you down.</h2>
+          <p>We design, build, and deploy custom AI agents that handle real business tasks — from lead follow-up and client onboarding to content workflows and internal reporting. These aren't chatbots. They're purpose-built agents that integrate with the tools you already use and take work off your plate entirely.</p>
+          <ul class="service-checklist">
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Custom agent design scoped to your specific workflow
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Integration with your CRM, email, forms, and existing tools
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Lead nurturing and follow-up agents that run automatically
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Content generation and publishing workflows
+            </li>
+            <li>
+              <span class="check-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Ongoing tuning, monitoring, and iteration post-launch
+            </li>
+          </ul>
+          <div class="platform-tags">
+            <span class="platform-tag"><span class="platform-dot"></span>Claude / OpenAI</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Make / Zapier</span>
+            <span class="platform-tag"><span class="platform-dot"></span>HubSpot / CRMs</span>
+            <span class="platform-tag"><span class="platform-dot"></span>Custom APIs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK -->
+  <section class="process-section">
+    <div class="wrap">
+      <div class="section-header">
+        <div class="eyebrow reveal" style="justify-content:center;">How We Work</div>
+        <h2 class="reveal reveal-d1">From first call to compounding growth.</h2>
+        <p class="reveal reveal-d2">A repeatable process we've refined over a decade of campaigns — clear at every stage, built for momentum.</p>
+      </div>
+      <div class="process-grid">
+        <div class="process-step reveal">
+          <div class="process-step-num">01</div>
+          <h3>Discovery &amp; Audit</h3>
+          <p>We start by understanding your business, your customers, and what's already been tried. Then we audit your current tracking, accounts, and creative to find gaps and opportunities before spending a dollar.</p>
+        </div>
+        <div class="process-step reveal reveal-d1">
+          <div class="process-step-num">02</div>
+          <h3>Strategy &amp; Planning</h3>
+          <p>We build a channel strategy tied directly to your revenue goals — with budget allocation, KPI targets, and a 90-day roadmap. No vague deliverables. No undefined timelines.</p>
+        </div>
+        <div class="process-step reveal reveal-d2">
+          <div class="process-step-num">03</div>
+          <h3>Launch &amp; Optimize</h3>
+          <p>Campaigns go live with rigorous tracking in place from day one. We test continuously — creative, copy, bids, audiences — and double down on what's working before the first invoice arrives.</p>
+        </div>
+        <div class="process-step reveal reveal-d3">
+          <div class="process-step-num">04</div>
+          <h3>Report &amp; Scale</h3>
+          <p>Transparent weekly reporting, monthly deep-dives, and a live dashboard you can check anytime. As performance improves, we scale spend into what's working and sunset what isn't.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-header">
+        <div class="eyebrow reveal" style="justify-content:center;">Common Questions</div>
+        <h2 class="reveal reveal-d1">What you'll probably want to know.</h2>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item reveal">
+          <h4>Do you require long-term contracts?</h4>
+          <p>We work on monthly agreements with a 30-day notice period. We don't believe in locking clients in — we believe in earning retention through results.</p>
+        </div>
+        <div class="faq-item reveal reveal-d1">
+          <h4>Do you work across multiple channels at once?</h4>
+          <p>Yes — and we recommend it. The most effective programs use paid search and social together, with content and analytics as the connective tissue. We manage the full picture.</p>
+        </div>
+        <div class="faq-item reveal reveal-d3">
+          <h4>How quickly will we see results?</h4>
+          <p>Paid search and social campaigns typically show meaningful data within the first 30–60 days. Content compounds over 3–6 months. We set realistic expectations on day one.</p>
+        </div>
+        <div class="faq-item reveal">
+          <h4>Do you handle creative production?</h4>
+          <p>We handle ad copy, creative strategy, and direction for all formats. For video and photo production, we work with your existing assets or refer trusted production partners.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" aria-label="Get in touch">
+    <div class="cta-glow" aria-hidden="true"></div>
+    <div class="cta-inner">
+      <div class="eyebrow on-dark reveal" style="justify-content:center;">Ready to get started?</div>
+      <h2 class="reveal reveal-d1">Let's talk about<br><span class="grad">what you actually need.</span></h2>
+      <p class="reveal reveal-d2">Tell us about your business, your goals, and what you've tried before. We'll give you a straight answer on whether we're the right fit — and if we are, exactly how we'd approach it.</p>
+      <div class="cta-actions reveal reveal-d2">
+        <a href="index.html#contact" class="btn btn-primary btn-lg">Get In Touch
+          <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="mission.html" class="btn btn-outline-white btn-lg">Who We Are</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" aria-label="RealTime Marketing Group home">
+          <img src="RTMG Logo.png" alt="RealTime Marketing Group" class="footer-logo">
+        </a>
+        <p class="footer-tagline">Performance-driven campaigns that connect businesses to the right people at the right moment.</p>
+      </div>
+      <nav class="footer-col" aria-label="Services">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="services.html#paid-search">Paid Search</a></li>
+          <li><a href="services.html#social">Social Advertising</a></li>
+          <li><a href="services.html#content">Content Strategy</a></li>
+          <li><a href="services.html#analytics">Analytics</a></li>
+          <li><a href="services.html#websites">Website Design</a></li>
+          <li><a href="services.html#ai-agents">AI Agent Setup</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Company">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="mission.html">Who We Are</a></li>
+          <li><a href="index.html#results">Results</a></li>
+          <li><a href="index.html#clients">Clients</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Contact">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="index.html#contact">Get In Touch</a></li>
+          <li><a href="mailto:info@realtimemg.com">info@realtimemg.com</a></li>
+          <li><a href="tel:+19197980773">(919) 798-0773</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 RealTime Marketing Group. All rights reserved.</span>
+      <span>Privacy Policy &nbsp;·&nbsp; Terms</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+  if (window.scrollY > 40) nav.classList.add('scrolled');
+
+  // Mobile drawer
+  const toggle = document.querySelector('.nav-toggle');
+  const drawer = document.getElementById('mobile-drawer');
+  toggle.addEventListener('click', () => {
+    const open = drawer.dataset.open === 'true';
+    drawer.dataset.open = String(!open);
+    toggle.setAttribute('aria-expanded', String(!open));
+    toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+  });
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    drawer.dataset.open = 'false';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+  }));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.dataset.open === 'true') {
+      drawer.dataset.open = 'false';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      toggle.focus();
+    }
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
