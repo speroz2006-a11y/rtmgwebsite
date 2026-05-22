@@ -166,7 +166,7 @@
     .mobile-drawer .btn { width:100%;margin-top:var(--sp-3);justify-content:center; }
 
     /* ── HERO ── */
-    .hero { position:relative;min-height:100dvh;
+    .hero { position:relative;min-height:calc(100dvh - 240px);
       background:#051F30;
       display:flex;align-items:center;overflow:hidden; }
     #hero-canvas { position:absolute;inset:0;width:100%;height:100%;z-index:0; }
@@ -196,7 +196,6 @@
       padding:calc(var(--nav-h) + var(--sp-9)) var(--sp-5) var(--sp-11);
       max-width:var(--max-w);margin:0 auto; }
     @media(min-width:768px){ .hero-inner { padding-left:var(--sp-7);padding-right:var(--sp-7); } }
-    @media(min-width:1024px){ .hero-inner { grid-template-columns:1fr 420px; } }
     .hero-text { display:flex;flex-direction:column;gap:var(--sp-6); }
     .hero-badge { display:inline-flex;align-items:center;gap:var(--sp-2);
       border:1px solid rgba(37,146,216,.30);background:rgba(37,146,216,.08);
@@ -210,11 +209,17 @@
       0%,100% { box-shadow:0 0 0 2px rgba(56,189,248,.25); }
       50% { box-shadow:0 0 0 5px rgba(56,189,248,.0); }
     }
-    .hero h1 { font-size:clamp(2.6rem,5.5vw,4.25rem);font-weight:800;
+    .hero h1 { font-size:clamp(2.2rem,5.5vw,7rem);font-weight:800;
       color:#fff;line-height:1.04;letter-spacing:-.035em; }
     .hero h1 .grad {
       background:linear-gradient(95deg,#7DD4FC 0%,#38BDF8 50%,#60A5FA 100%);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .hero-line2 { display:inline-block;white-space:nowrap; }
+    /* Goo stage: inline grid so both text spans occupy the same cell (stacked, not side-by-side).
+       The threshold filter lives on the container; per-span blur is applied inline by JS. */
+    .goo-stage { display:inline-grid;vertical-align:baseline;overflow:visible;
+      filter:url(#hero-goo); }
+    .goo-stage > * { grid-area:1/1;white-space:nowrap;color:#7DD4FC;user-select:none; }
     .hero-sub { font-size:clamp(1rem,1.4vw,1.15rem);color:rgba(255,255,255,.68);
       line-height:1.75;max-width:520px; }
     .hero-actions { display:flex;gap:var(--sp-3);flex-wrap:wrap;align-items:center; }
@@ -230,9 +235,26 @@
     .hero-stat span { font-size:var(--fs-xs);color:rgba(255,255,255,.50);
       font-weight:500;letter-spacing:.01em; }
 
-    /* ── HERO VISUAL CARD ── */
-    .hero-visual { display:none; }
-    @media(min-width:1024px){ .hero-visual { display:flex;justify-content:flex-end;align-items:center; } }
+    /* ── HERO VISUAL (globe) — absolutely positioned, never in grid flow ── */
+    .hero-visual { display:none;pointer-events:none; }
+    @media(min-width:1024px){
+      .hero-visual {
+        display:block;
+        position:absolute;
+        /* Anchored to 62% from left so it stays in the right half at any viewport width */
+        left:62%;
+        top:50%;
+        transform:translate(-50%,-50%);
+        width:min(600px, 42vw);
+        height:min(600px, 42vw);
+        z-index:2;
+        overflow:visible;
+      }
+    }
+    #globe-canvas { width:100%;height:100%;display:block; }
+    .hero-visual::after { content:'';position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(circle at 60% 55%, rgba(248,113,113,.10) 0%, transparent 55%);
+      z-index:-1; }
     .hero-card { background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);
       border-radius:var(--r-xl);padding:var(--sp-6);
       backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
@@ -268,20 +290,31 @@
 
     /* ── LOGO BAR ── */
     .logo-bar { border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-      background:var(--bg-muted);padding:var(--sp-4) 0; }
-    .logo-bar-inner { max-width:var(--max-w);margin:0 auto;padding:0 var(--sp-5);
-      display:flex;align-items:center;justify-content:center;
-      gap:var(--sp-4);flex-wrap:wrap; }
-    @media(min-width:768px){ .logo-bar-inner { padding:0 var(--sp-7); } }
+      background:var(--bg-muted);padding:var(--sp-6) 0;overflow:hidden; }
     .logo-bar-label { font-family:'Bricolage Grotesque',sans-serif;font-size:var(--fs-xs);
       font-weight:700;letter-spacing:.07em;text-transform:uppercase;
-      color:var(--text-3);white-space:nowrap; }
-    .logo-bar-divider { width:1px;height:16px;background:var(--border-2); }
-    .logo-bar-items { display:flex;align-items:center; }
-    .logo-bar-item { font-family:'Bricolage Grotesque',sans-serif;font-size:var(--fs-sm);
-      font-weight:600;color:var(--text-3);padding:var(--sp-1) var(--sp-4);
-      border-right:1px solid var(--border-2); }
-    .logo-bar-item:last-child { border-right:none; }
+      color:var(--text-3);text-align:center;margin-bottom:var(--sp-5);
+      padding:0 var(--sp-5); }
+    .logo-bar-track { overflow:hidden;width:100%; }
+    .logo-bar-items { display:flex;align-items:center;width:max-content; }
+    .logo-item { display:flex;align-items:center;justify-content:center;
+      height:90px;padding:0 var(--sp-7);flex-shrink:0;cursor:default; }
+    .logo-item img { height:54px;max-width:160px;width:auto;object-fit:contain;
+      opacity:1;
+      transition:opacity var(--dur-slow) var(--ease-out); }
+    .logo-item:hover img { opacity:1; }
+    /* per-logo size overrides */
+    .logo-item img[src*="BB-LOGO"]          { height:64px;max-width:180px; }
+    .logo-item img[src*="gracey-backer"]    { height:40px;max-width:220px; }
+    .logo-item img[src*="garlicfest-logo"]  { height:60px;max-width:200px; }
+    /* Delray Beach Fashion Week — gold logo needs dark background to be visible */
+    .logo-item img[src*="delray-fashion"]   { background:#1a1a2e;border-radius:8px;padding:6px 12px;box-sizing:border-box;height:64px;max-width:200px; }
+    .logo-wordmark { font-family:'Bricolage Grotesque',sans-serif;font-size:var(--fs-sm);
+      font-weight:700;color:var(--text-3);letter-spacing:.01em;white-space:nowrap;
+      opacity:.45;transition:color var(--dur-base) var(--ease-out),
+        opacity var(--dur-base) var(--ease-out); }
+    .logo-item:hover .logo-wordmark { color:var(--navy);opacity:1; }
+    .logo-sep { width:1px;height:20px;background:var(--border);flex-shrink:0; }
 
     /* ── SECTION HEADER ── */
     .section-header { margin-bottom:var(--sp-9); }
@@ -346,11 +379,7 @@
       font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;
       color:rgba(37,146,216,.8);margin-bottom:var(--sp-5); }
     .bento-card.dark .bento-tag,.bento-card.blue-card .bento-tag { color:rgba(125,212,252,.75); }
-    .bento-icon { width:48px;height:48px;border-radius:var(--r-md);
-      display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-5);
-      color:var(--blue);background:var(--blue-light); }
-    .bento-card.dark .bento-icon,.bento-card.blue-card .bento-icon {
-      background:rgba(37,146,216,.14);color:rgba(125,212,252,.9); }
+    .bento-icon { display:none; }
     .bento-card h3 { font-size:var(--fs-xl);font-weight:700;margin-bottom:var(--sp-3);
       color:var(--text-1);letter-spacing:-.02em; }
     .bento-card.dark h3,.bento-card.blue-card h3 { color:#fff; }
@@ -363,7 +392,8 @@
     .bento-check { width:20px;height:20px;flex-shrink:0;border-radius:var(--r-sm);
       background:rgba(37,146,216,.18);display:flex;align-items:center;
       justify-content:center;color:rgba(125,212,252,.9);margin-top:1px; }
-    .bento-num { position:absolute;bottom:var(--sp-5);right:var(--sp-6);
+    .bento-num { display: none; }
+    .bento-num-orig-hidden { position:absolute;bottom:var(--sp-5);right:var(--sp-6);
       font-family:'Bricolage Grotesque',sans-serif;font-size:5.5rem;font-weight:900;
       line-height:1;letter-spacing:-.06em;pointer-events:none;user-select:none; }
     .bento-card.dark .bento-num,.bento-card.blue-card .bento-num { color:rgba(255,255,255,.04); }
@@ -413,10 +443,7 @@
       transform:translateY(-3px); }
     .client-card:hover::before { opacity:1; }
     .cc-bl,.cc-br { display:none; }
-    .client-icon { width:48px;height:48px;border-radius:var(--r-md);background:var(--blue-light);
-      display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-5);color:var(--blue); }
-    .client-icon svg { width:24px;height:24px;stroke:currentColor;fill:none;
-      stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round; }
+    .client-icon { display:none; }
     .client-name { font-family:'Bricolage Grotesque',sans-serif;font-size:var(--fs-lg);
       font-weight:700;color:var(--text-1);margin-bottom:var(--sp-2);letter-spacing:-.015em; }
     .client-desc { font-size:var(--fs-sm);color:var(--text-3);line-height:1.65; }
@@ -462,23 +489,36 @@
       transition:color var(--dur-fast); }
     .contact-info-item a:hover { color:var(--blue); }
 
-    /* ── FOOTER ── */
-    footer { background:var(--navy-darker);color:rgba(255,255,255,.52);
-      padding:var(--sp-10) 0 var(--sp-6); }
-    .footer-grid { display:grid;gap:var(--sp-8);grid-template-columns:1fr; }
-    @media(min-width:640px){ .footer-grid { grid-template-columns:2fr 1fr 1fr 1fr; } }
-    .footer-logo-img { height:48px;width:auto;margin-bottom:var(--sp-4); }
-    .footer-tagline { font-size:var(--fs-sm);line-height:1.7;max-width:260px; }
-    .footer-col h4 { font-family:'Bricolage Grotesque',sans-serif;font-size:var(--fs-xs);font-weight:700;
-      color:rgba(255,255,255,.9);margin-bottom:var(--sp-5);
-      text-transform:uppercase;letter-spacing:.08em; }
-    .footer-col ul { display:flex;flex-direction:column;gap:var(--sp-3); }
-    .footer-col a { font-size:var(--fs-sm);text-decoration:none;color:rgba(255,255,255,.48);
-      transition:color var(--dur-fast); }
-    .footer-col a:hover { color:#fff; }
-    .footer-bottom { display:flex;align-items:center;justify-content:space-between;
-      flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-9);padding-top:var(--sp-6);
-      border-top:1px solid rgba(255,255,255,.08);font-size:var(--fs-xs); }
+    /* ── FOOTER — Ft5 statement style ── */
+    .footer-statement {
+      background:var(--navy-darker); color:rgba(255,255,255,.78);
+      padding:var(--sp-9) 0 var(--sp-7);
+      border-top:1px solid rgba(255,255,255,.05);
+    }
+    .footer-statement .wrap { display:flex; flex-direction:column; gap:var(--sp-3); }
+    .footer-line {
+      font-family:'Bricolage Grotesque',sans-serif;
+      font-size:clamp(1.125rem, 1.6vw, 1.375rem);
+      font-weight:500; line-height:1.4; letter-spacing:-.015em;
+      color:rgba(255,255,255,.92);
+    }
+    .footer-mark { color:#fff; text-decoration:none; font-weight:700; }
+    .footer-mark:hover { color:#7DD4FC; }
+    .footer-sep { color:rgba(255,255,255,.28); padding:0 .35em; }
+    .footer-contact {
+      font-size:var(--fs-sm); line-height:1.7;
+      color:rgba(255,255,255,.55);
+    }
+    .footer-contact a {
+      color:rgba(255,255,255,.78); text-decoration:none;
+      transition:color var(--dur-fast);
+    }
+    .footer-contact a:hover { color:#7DD4FC; }
+    .footer-fineprint {
+      font-size:var(--fs-xs); color:rgba(255,255,255,.30);
+      margin-top:var(--sp-3); padding-top:var(--sp-4);
+      border-top:1px solid rgba(255,255,255,.06);
+    }
 
     /* ── SCROLL REVEAL ── */
     .reveal { opacity:0;transform:translateY(22px);
@@ -534,9 +574,11 @@
     .hero-stat strong { letter-spacing:-.05em; }
 
     /* ── LOGO BAR MARQUEE ── */
-    .logo-bar { overflow:hidden; }
-    .logo-bar-items { animation:marqueeScroll 22s linear infinite; }
-    .logo-bar:hover .logo-bar-items { animation-play-state:paused; }
+    @keyframes marqueeScroll {
+      from { transform:translateX(0); }
+      to   { transform:translateX(-50%); }
+    }
+    .logo-bar-items { animation:marqueeScroll 55s linear infinite; }
   </style>
 </head>
 <body>
@@ -549,10 +591,9 @@
     </a>
     <ul class="nav-links">
       <li><a href="services.html">Services</a></li>
-      <li><a href="#results">Results</a></li>
+      <li><a href="#results">How we work</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="#contact" class="btn btn-primary btn-sm nav-cta">Get Started</a>
     <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"
       aria-controls="mobile-drawer" type="button">
       <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/>
@@ -570,77 +611,124 @@
 </div>
 
 <!-- HERO -->
+<svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <filter id="hero-goo" x="-10%" y="-80%" width="120%" height="260%">
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/>
+    </filter>
+  </defs>
+</svg>
 <section class="hero" id="home" aria-label="Hero">
   <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div id="hero-grid-base" aria-hidden="true"></div>
   <div id="hero-grid-reveal" aria-hidden="true"></div>
   <div class="hero-glow-1" aria-hidden="true"></div>
   <div class="hero-glow-2" aria-hidden="true"></div>
+  <div class="hero-visual" aria-hidden="true">
+    <canvas id="globe-canvas"></canvas>
+  </div>
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-badge">
-        <span class="hero-badge-dot" aria-hidden="true"></span>
-        $10M+ in Revenue Generated for Clients
-      </div>
-      <h1>Performance marketing<br><span class="grad">that moves the needle.</span></h1>
-      <p class="hero-sub">We build campaigns that connect your business to the right people at the right moment — paid media, content, and data-driven creative working together.</p>
+      <h1>Digital marketing<br><span class="hero-line2">that <span class="goo-stage" id="hero-goo-stage" data-words="moves the needle.|fills the seats.|books the calls.|sells the tickets.|grows the room."><span class="goo-t1">moves the needle.</span><span class="goo-t2" style="opacity:0"></span></span></span></h1>
+      <p class="hero-sub">Paid media, websites, and content — built to drive real outcomes for businesses nationwide.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-primary btn-lg">Start Growing
           <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat"><strong>$10M+</strong><span>Revenue Generated</span></div>
-        <div class="hero-stat"><strong>10+</strong><span>Years Experience</span></div>
-        <div class="hero-stat"><strong>100%</strong><span>Transparent Reporting</span></div>
-      </div>
-    </div>
-    <div class="hero-visual" aria-hidden="true">
-      <div class="hero-card">
-        <div class="hc-header">
-          <span class="hc-title">Campaign Overview</span>
-          <span class="hc-live"><span class="hc-live-dot"></span>Active</span>
-        </div>
-        <div class="hc-bignum">
-          <span class="hc-bignum-val">$10M+</span>
-          <span class="hc-bignum-label">Total Revenue Generated</span>
-        </div>
-        <div class="hc-bars">
-          <div class="hc-bar-row">
-            <div class="hc-bar-meta"><span>Paid Search</span><span>ROAS 3.8×</span></div>
-            <div class="hc-bar-track"><div class="hc-bar-fill" style="width:88%"></div></div>
-          </div>
-          <div class="hc-bar-row">
-            <div class="hc-bar-meta"><span>Social Ads</span><span>ROAS 2.9×</span></div>
-            <div class="hc-bar-track"><div class="hc-bar-fill" style="width:72%"></div></div>
-          </div>
-          <div class="hc-bar-row">
-            <div class="hc-bar-meta"><span>Content</span><span>↑ 4× Reach</span></div>
-            <div class="hc-bar-track"><div class="hc-bar-fill" style="width:58%"></div></div>
-          </div>
-        </div>
-        <div class="hc-grid">
-          <div class="hc-stat"><div class="hc-stat-val">3×</div><div class="hc-stat-label">Avg. ROAS</div></div>
-          <div class="hc-stat"><div class="hc-stat-val">10+</div><div class="hc-stat-label">Yrs Active</div></div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- LOGO BAR -->
-<div class="logo-bar">
-  <div class="logo-bar-inner">
+
+<!-- CLIENT LOGOS -->
+<section class="logo-bar" aria-label="Client logos">
+  <p class="logo-bar-label">Trusted by businesses for over 20 years</p>
+  <div class="logo-bar-track">
     <div class="logo-bar-items">
-      <span class="logo-bar-item">Local Businesses</span>
-      <span class="logo-bar-item">Service Companies</span>
-      <span class="logo-bar-item">Retail Brands</span>
-      <span class="logo-bar-item">Professional Services</span>
+
+      <!-- ── SET 1 ── -->
+      <div class="logo-item"><img src="https://zonafresca.com/images/zona_fresca_logo2015.png" alt="Zona Fresca"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="https://www.orangebrook.com/wp-content/uploads/sites/9445/2024/06/OrangebrookLogo.png" alt="Orangebrook Golf &amp; Country Club"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="garlicfest-logo.png" alt="Delray Beach Garlic Fest"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="https://festivalmanagementgroup.com/wp-content/uploads/2017/05/BB-LOGO.png" alt="Bacon &amp; Bourbon Festival"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="https://daniabeachwineandseafoodfest.com/wp-content/uploads/2023/05/dania-beach-logo-w-wine.png" alt="Dania Beach Wine &amp; Seafood Festival"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="https://smittyssistrunk.com/wp-content/uploads/2023/09/Logo-2-small.png" alt="Smitty's Sistrunk"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="oasis-logo.png" alt="OASIS Reuse Water"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="https://hsmc-fl.com/wp-content/uploads/2020/03/2021-HeaderLogoTrio.png" alt="Historical Society of Martin County"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="https://daniabeachcra.org/sites/default/files/logo.png" alt="Dania Beach CRA"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="jazzfest-logo.png" alt="Jazz Fest Pompano Beach"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="https://sanchezlawn.com/wp-content/uploads/2022/06/Logo-Sanchez-lawn-e1654198580101.png" alt="Sanchez Lawn Care"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="patch-logo.png" alt="The Dania Beach Patch"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="northwood-logo.png" alt="Historic Northwood Village"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="beyond-above-logo.png" alt="Beyond &amp; Above Corporate Flight Attendant Training"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="gracey-backer-logo.png" alt="Gracey-Backer Insurance"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="wpb-cra-logo.png" alt="West Palm Beach CRA"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="wpb-golf-logo.png" alt="West Palm Beach Golf Course"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="synergy-logo.png" alt="Synergy Personal Training"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item"><img src="delray-fashion-logo.png" alt="Delray Beach Fashion Week"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+
+      <!-- ── SET 2 (duplicate for seamless loop) ── -->
+      <div class="logo-item" aria-hidden="true"><img src="https://zonafresca.com/images/zona_fresca_logo2015.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="https://www.orangebrook.com/wp-content/uploads/sites/9445/2024/06/OrangebrookLogo.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="garlicfest-logo.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="https://festivalmanagementgroup.com/wp-content/uploads/2017/05/BB-LOGO.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="https://daniabeachwineandseafoodfest.com/wp-content/uploads/2023/05/dania-beach-logo-w-wine.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="https://smittyssistrunk.com/wp-content/uploads/2023/09/Logo-2-small.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="oasis-logo.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="https://hsmc-fl.com/wp-content/uploads/2020/03/2021-HeaderLogoTrio.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="https://daniabeachcra.org/sites/default/files/logo.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="jazzfest-logo.png" alt="Jazz Fest Pompano Beach"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="https://sanchezlawn.com/wp-content/uploads/2022/06/Logo-Sanchez-lawn-e1654198580101.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="patch-logo.png" alt=""></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="northwood-logo.png" alt="Historic Northwood Village"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="beyond-above-logo.png" alt="Beyond &amp; Above Corporate Flight Attendant Training"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="gracey-backer-logo.png" alt="Gracey-Backer Insurance"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="wpb-cra-logo.png" alt="West Palm Beach CRA"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="wpb-golf-logo.png" alt="West Palm Beach Golf Course"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="synergy-logo.png" alt="Synergy Personal Training"></div>
+      <span class="logo-sep" aria-hidden="true"></span>
+      <div class="logo-item" aria-hidden="true"><img src="delray-fashion-logo.png" alt="Delray Beach Fashion Week"></div>
+
     </div>
   </div>
-</div>
-
-<!-- MARQUEE STRIP -->
+</section>
 
 <!-- SERVICES -->
 <section class="section" id="services">
@@ -714,34 +802,29 @@
   </div>
 </section>
 
-<!-- RESULTS -->
+<!-- HOW WE WORK -->
 <section class="results" id="results">
   <div class="wrap results-inner">
     <div class="section-header center on-dark reveal">
-      <span class="eyebrow">Why It Works</span>
-      <h2 class="section-title">Numbers that speak for themselves.</h2>
-      <p class="section-sub">We don't chase vanity metrics. These are real outcomes from real campaigns.</p>
+      <h2 class="section-title">How we work.</h2>
+      <p class="section-sub">Every account is genuinely managed by the people running it — not handed off to a generic deck of recommendations.</p>
     </div>
     <div class="results-grid">
       <div class="result-card reveal">
-        <div class="result-num" data-count="10" data-prefix="$" data-suffix="M+">$10M+</div>
-        <div class="result-label">Revenue Generated</div>
-        <p class="result-desc">Directly attributed to campaigns we managed</p>
+        <div class="result-label">Direct access</div>
+        <p class="result-desc">You talk to the team running your campaigns. No layers, no slow handoffs between strategists and execs.</p>
       </div>
       <div class="result-card reveal reveal-d1">
-        <div class="result-num" data-count="10" data-suffix="+">10+</div>
-        <div class="result-label">Years Active</div>
-        <p class="result-desc">Continuously evolving as platforms change</p>
+        <div class="result-label">Full account ownership</div>
+        <p class="result-desc">You own every ad account, pixel, and analytics property. We work inside yours, never behind it.</p>
       </div>
       <div class="result-card reveal reveal-d2">
-        <div class="result-num" data-count="3" data-suffix="×">3×</div>
-        <div class="result-label">Average ROAS</div>
-        <p class="result-desc">Across paid search and social campaigns</p>
+        <div class="result-label">Plain-English reporting</div>
+        <p class="result-desc">Weekly notes on what we changed and why — not a dashboard you have to interpret.</p>
       </div>
       <div class="result-card reveal reveal-d3">
-        <div class="result-num" data-count="100" data-suffix="%">100%</div>
-        <div class="result-label">Transparent</div>
-        <p class="result-desc">Full access to your accounts, always</p>
+        <div class="result-label">Nationwide coverage</div>
+        <p class="result-desc">We work with businesses across the country — wherever your customers are, we know how to reach them.</p>
       </div>
     </div>
   </div>
@@ -752,57 +835,33 @@
   <div class="wrap">
     <div class="section-header center reveal">
       <span class="eyebrow">Who We Work With</span>
-      <h2 class="section-title">Built for businesses serious about growth.</h2>
-      <p class="section-sub">We partner with companies across industries ready to invest in performance-driven marketing.</p>
+      <h2 class="section-title">A book built across industries.</h2>
+      <p class="section-sub">From festivals and restaurants to municipal CRAs and specialty service businesses — the work spans South Florida, the Treasure Coast, and growing.</p>
     </div>
     <div class="clients-grid">
       <div class="client-card reveal">
-        <span class="cc-bl"></span><span class="cc-br"></span>
-        <div class="client-icon">
-          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        </div>
-        <h3 class="client-name">Home Services</h3>
-        <p class="client-desc">HVAC, plumbing, roofing, landscaping — businesses where every lead has real value.</p>
+        <h3 class="client-name">Festivals &amp; Events</h3>
+        <p class="client-desc">Wine, food, music, and seasonal festivals across South Florida. Ticketing pushes, attendance campaigns, year-round community building.</p>
       </div>
       <div class="client-card reveal reveal-d1">
-        <span class="cc-bl"></span><span class="cc-br"></span>
-        <div class="client-icon">
-          <svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-        </div>
-        <h3 class="client-name">Restaurants</h3>
-        <p class="client-desc">Local restaurants, cafes, and food brands growing their customer base through digital.</p>
+        <h3 class="client-name">Restaurants &amp; Food</h3>
+        <p class="client-desc">Local restaurants and food brands growing repeat traffic through paid social and content. Catering, delivery, and brand campaigns.</p>
       </div>
       <div class="client-card reveal reveal-d2">
-        <span class="cc-bl"></span><span class="cc-br"></span>
-        <div class="client-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        </div>
-        <h3 class="client-name">Professional Services</h3>
-        <p class="client-desc">Law firms, accountants, and consultants that need a consistent pipeline of qualified leads.</p>
+        <h3 class="client-name">Municipal &amp; Cultural</h3>
+        <p class="client-desc">CRAs, historical societies, and community programs running awareness, civic engagement, and event marketing through digital channels.</p>
       </div>
       <div class="client-card reveal">
-        <span class="cc-bl"></span><span class="cc-br"></span>
-        <div class="client-icon">
-          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        </div>
-        <h3 class="client-name">Retail &amp; E-Commerce</h3>
-        <p class="client-desc">Product businesses scaling paid social and search to drive purchases and repeat customers.</p>
+        <h3 class="client-name">Golf &amp; Recreation</h3>
+        <p class="client-desc">Public courses and country clubs filling tee times, growing membership, and selling event space and lessons.</p>
       </div>
       <div class="client-card reveal reveal-d1">
-        <span class="cc-bl"></span><span class="cc-br"></span>
-        <div class="client-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-        </div>
-        <h3 class="client-name">Cities &amp; Municipalities</h3>
-        <p class="client-desc">Local governments driving community awareness, programs, and civic engagement digitally.</p>
+        <h3 class="client-name">Service Businesses</h3>
+        <p class="client-desc">Lawn care, insurance, personal training — local service operators where every booked lead has real margin.</p>
       </div>
       <div class="client-card reveal reveal-d2">
-        <span class="cc-bl"></span><span class="cc-br"></span>
-        <div class="client-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
-        </div>
-        <h3 class="client-name">Events</h3>
-        <p class="client-desc">Concerts, conferences, and festivals that need ticket sales and attendance campaigns.</p>
+        <h3 class="client-name">Specialty &amp; Training</h3>
+        <p class="client-desc">Niche operators serving specific audiences — corporate training, B2B specialties, and other businesses needing precise targeting.</p>
       </div>
     </div>
   </div>
@@ -811,9 +870,8 @@
 <!-- CTA -->
 <section class="cta-section">
   <div class="wrap cta-inner">
-    <span class="eyebrow on-dark" style="justify-content:center;">Ready to grow?</span>
-    <h2 class="cta-title">Let's build something<br>that <span class="hi">performs.</span></h2>
-    <p class="cta-sub">Tell us about your business. We'll tell you exactly how we'd grow it — no fluff, no filler.</p>
+    <h2 class="cta-title">Tell us where you are.<br>We'll tell you <span class="hi">where to go next.</span></h2>
+    <p class="cta-sub">A 20-minute call, no pitch deck. We'll walk through your current marketing and what we'd change if we ran it.</p>
     <div class="cta-btns">
       <a href="#contact" class="btn btn-white btn-lg">Get In Touch
         <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -827,10 +885,9 @@
   <div class="wrap">
     <div class="contact-grid">
       <div>
-        <span class="eyebrow">Get In Touch</span>
-        <h2 class="section-title">Let's talk about <span class="accent">your growth.</span></h2>
+        <h2 class="section-title">What does growth look like <span class="accent">for you?</span></h2>
         <p style="font-size:var(--fs-lg);color:var(--text-2);line-height:1.75;margin-top:var(--sp-4)">
-          We take on a small number of clients at a time — so you always get our full attention. Tell us where you are and where you want to go.
+          Tell us about your business and where you want to take it. We'll give you a straight answer on the right approach and what it would look like working together.
         </p>
         <div class="contact-info">
           <div class="contact-info-item">
@@ -880,46 +937,21 @@
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer class="footer-statement">
   <div class="wrap">
-    <div class="footer-grid">
-      <div>
-        <a href="index.html">
-          <img src="RTMG Logo.png" alt="RealTime Marketing Group" class="footer-logo-img">
-        </a>
-        <p class="footer-tagline">Performance-driven campaigns that connect businesses to the right people at the right moment.</p>
-      </div>
-      <nav class="footer-col" aria-label="Services">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="services.html#paid-search">Paid Search</a></li>
-          <li><a href="services.html#social">Social Advertising</a></li>
-          <li><a href="services.html#content">Content Strategy</a></li>
-          <li><a href="services.html#analytics">Analytics</a></li>
-          <li><a href="services.html#websites">Website Design</a></li>
-          <li><a href="services.html#ai-agents">AI Agent Setup</a></li>
-        </ul>
-      </nav>
-      <nav class="footer-col" aria-label="Company">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#results">Results</a></li>
-          <li><a href="#clients">Clients</a></li>
-        </ul>
-      </nav>
-      <nav class="footer-col" aria-label="Contact">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="#contact">Get In Touch</a></li>
-          <li><a href="mailto:info@realtimemg.com">info@realtimemg.com</a></li>
-          <li><a href="tel:+19197980773">(919) 798-0773</a></li>
-        </ul>
-      </nav>
-    </div>
-    <div class="footer-bottom">
-      <span>&copy; 2026 RealTime Marketing Group. All rights reserved.</span>
-      <span>Privacy Policy &nbsp;·&nbsp; Terms</span>
-    </div>
+    <p class="footer-line">
+      <a href="index.html" class="footer-mark">RealTime Marketing Group</a>
+      <span class="footer-sep">·</span>
+      Performance-driven digital marketing for businesses nationwide.
+    </p>
+    <p class="footer-contact">
+      <a href="mailto:info@realtimemg.com">info@realtimemg.com</a>
+      <span class="footer-sep">·</span>
+      <a href="tel:+19197980773">(919)&nbsp;798-0773</a>
+      <span class="footer-sep">·</span>
+      <a href="services.html">Services</a>
+    </p>
+    <p class="footer-fineprint">&copy; 2026 RealTime Marketing Group</p>
   </div>
 </footer>
 
@@ -1135,6 +1167,237 @@
       hero.style.setProperty('--gx', '-9999px');
       hero.style.setProperty('--gy', '-9999px');
     });
+  })();
+
+  /* ── HERO 3D WIREFRAME GLOBE ── */
+  (function(){
+    const canvas = document.getElementById('globe-canvas');
+    if(!canvas) return;
+    const desktopMQ = window.matchMedia('(min-width: 1024px)');
+    if(!desktopMQ.matches) return;  // never run on mobile/tablet
+    const ctx = canvas.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function resize(){
+      const rect = canvas.getBoundingClientRect();
+      if(rect.width === 0) return;
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+    }
+    requestAnimationFrame(() => { resize(); requestAnimationFrame(resize); });
+    window.addEventListener('resize', resize);
+    if(window.ResizeObserver){ new ResizeObserver(resize).observe(canvas); }
+
+    // Scattered client points (lat, lon) — globally distributed
+    const clients = [
+      [ 41, -88],   // N. America
+      [-18, -55],   // S. America
+      [ 54,  18],   // Europe
+      [  8,  34],   // Africa
+      [-26,  29],   // S. Africa
+      [ 36, 128],   // E. Asia
+      [-12, 135],   // Oceania
+      [ 22,  78]    // S. Asia
+    ];
+
+    let angle = 0;
+    const tiltX = -0.30;
+    const tiltZ = Math.PI / 4;  // 45° to the right
+    let running = true;
+    document.addEventListener('visibilitychange', () => { running = !document.hidden; if(running) frame(); });
+
+    function latLonToVec(lat, lon){
+      const phi = lat * Math.PI / 180;
+      const lam = lon * Math.PI / 180;
+      return [Math.cos(phi)*Math.cos(lam), Math.sin(phi), Math.cos(phi)*Math.sin(lam)];
+    }
+
+    function project(v, cx, cy, R){
+      // rotate around Y (spin)
+      const cosA = Math.cos(angle), sinA = Math.sin(angle);
+      const x1 = v[0]*cosA + v[2]*sinA;
+      const z1 = -v[0]*sinA + v[2]*cosA;
+      const y1 = v[1];
+      // rotate around X (tilt poles toward viewer)
+      const cosT = Math.cos(tiltX), sinT = Math.sin(tiltX);
+      const y2 = y1*cosT - z1*sinT;
+      const z2 = y1*sinT + z1*cosT;
+      // rotate around Z (lean axis to the right)
+      const cosZ = Math.cos(tiltZ), sinZ = Math.sin(tiltZ);
+      const x3 = x1*cosZ - y2*sinZ;
+      const y3 = x1*sinZ + y2*cosZ;
+      return { x: cx + x3*R, y: cy + y3*R, z: z2 };
+    }
+
+    function drawPolyline(points){
+      // shade each segment by avg depth
+      for(let i = 0; i < points.length - 1; i++){
+        const a = points[i], b = points[i+1];
+        const z = (a.z + b.z) * 0.5;
+        const t = (z + 1) * 0.5; // 0..1
+        const alpha = 0.05 + t * 0.40;
+        ctx.strokeStyle = `rgba(125,212,252,${alpha})`;
+        ctx.lineWidth = (0.8 + t * 0.5) * dpr;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
+
+    function frame(){
+      if(!running) return;
+      if(!reduceMotion) angle += 0.0035;
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      const cx = w/2, cy = h/2;
+      // 0.44 keeps the full sphere within the canvas (leaves ~12% padding each side)
+      const R = Math.min(w, h) * 0.44;
+
+      // Latitude rings
+      for(let lat = -75; lat <= 75; lat += 15){
+        const pts = [];
+        const segs = 72;
+        for(let i = 0; i <= segs; i++){
+          const lon = (i/segs) * 360 - 180;
+          pts.push(project(latLonToVec(lat, lon), cx, cy, R));
+        }
+        drawPolyline(pts);
+      }
+
+      // Meridians
+      for(let lon = -180; lon < 180; lon += 15){
+        const pts = [];
+        const segs = 56;
+        for(let i = 0; i <= segs; i++){
+          const lat = -90 + (i/segs) * 180;
+          pts.push(project(latLonToVec(lat, lon), cx, cy, R));
+        }
+        drawPolyline(pts);
+      }
+
+      // Silhouette ring
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(56,189,248,0.55)';
+      ctx.lineWidth = 1.2 * dpr;
+      ctx.stroke();
+
+      // Client dots
+      const dots = clients.map(([lat,lon]) => project(latLonToVec(lat,lon), cx, cy, R))
+                          .sort((a,b) => a.z - b.z);
+      for(const p of dots){
+        if(p.z < -0.05) continue;
+        const a = Math.max(0.25, Math.min(1, (p.z + 0.2) * 1.3));
+        // soft glow
+        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 14 * dpr);
+        grd.addColorStop(0, `rgba(248,113,113,${0.55 * a})`);
+        grd.addColorStop(1, 'rgba(248,113,113,0)');
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 14 * dpr, 0, Math.PI*2);
+        ctx.fill();
+        // core
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2.6 * dpr, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(252,165,165,${a})`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.2 * dpr, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,255,255,${a})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+
+  /* ── HERO HEADLINE GOOEY MORPH ROTATOR (21st.dev port) ── */
+  (function(){
+    const stage = document.getElementById('hero-goo-stage');
+    if(!stage) return;
+    const words = (stage.dataset.words || '').split('|').filter(Boolean);
+    if(words.length < 2) return;
+
+    const t1 = stage.querySelector('.goo-t1');
+    const t2 = stage.querySelector('.goo-t2');
+    if(!t1 || !t2) return;
+
+    // Lock stage to widest phrase so no layout shift ever occurs
+    const MAX_LEN = words.reduce((m, w) => Math.max(m, w.length), 0);
+    stage.style.minWidth = MAX_LEN + 'ch';
+
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      t1.textContent = words[0]; t1.style.opacity = '100%'; t1.style.filter = '';
+      t2.style.opacity = '0%';
+      return;
+    }
+
+    const MORPH_TIME    = 1.0;   // seconds for one word-to-word morph
+    const COOLDOWN_TIME = 2.5;   // seconds to hold still between morphs
+
+    // Start at last index so first cooldown → increment shows words[0] in t2
+    let textIndex = words.length - 1;
+    let prevTime  = performance.now();
+    let morph    = 0;
+    let cooldown = COOLDOWN_TIME;
+
+    // Initial display: t2 shows words[0], t1 hidden
+    t1.textContent = words[textIndex % words.length];
+    t2.textContent = words[(textIndex + 1) % words.length];
+    t2.style.opacity = '100%'; t2.style.filter = '';
+    t1.style.opacity = '0%';   t1.style.filter = '';
+
+    function setMorph(fraction) {
+      // t2 morphs IN (blur fades away, opacity rises)
+      t2.style.filter  = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+      t2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+      // t1 morphs OUT (blur rises, opacity drops)
+      const f1 = 1 - fraction;
+      t1.style.filter  = `blur(${Math.min(8 / f1 - 8, 100)}px)`;
+      t1.style.opacity = `${Math.pow(f1, 0.4) * 100}%`;
+    }
+
+    function doCooldown() {
+      morph = 0;
+      t2.style.filter = ''; t2.style.opacity = '100%';
+      t1.style.filter = ''; t1.style.opacity = '0%';
+    }
+
+    function doMorph() {
+      morph -= cooldown;  // cooldown is ≤0 here, so morph grows each frame
+      cooldown = 0;
+      let fraction = morph / MORPH_TIME;
+      if (fraction > 1) {
+        cooldown = COOLDOWN_TIME;  // morph done — start hold period
+        fraction = 1;
+      }
+      setMorph(fraction);
+    }
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+      const shouldIncrementIndex = cooldown > 0;  // capture before decrement
+      const dt = (now - prevTime) / 1000;
+      prevTime = now;
+      cooldown -= dt;
+
+      if (cooldown <= 0) {
+        if (shouldIncrementIndex) {
+          // Cooldown just expired → advance to next word
+          textIndex = (textIndex + 1) % words.length;
+          t1.textContent = words[textIndex % words.length];
+          t2.textContent = words[(textIndex + 1) % words.length];
+        }
+        doMorph();
+      } else {
+        doCooldown();
+      }
+    }
+
+    requestAnimationFrame(animate);
   })();
 </script>
 </body>
