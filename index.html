@@ -904,33 +904,45 @@
           </div>
         </div>
       </div>
-      <form class="contact-form" onsubmit="return false">
+      <form class="contact-form" id="contact-form" action="https://formspree.io/f/maqkjdlq" method="POST">
         <div class="form-row">
           <div class="field">
             <label for="fname">First Name</label>
-            <input type="text" id="fname" placeholder="John" autocomplete="given-name">
+            <input type="text" id="fname" name="first_name" placeholder="John" autocomplete="given-name" required>
           </div>
           <div class="field">
             <label for="lname">Last Name</label>
-            <input type="text" id="lname" placeholder="Smith" autocomplete="family-name">
+            <input type="text" id="lname" name="last_name" placeholder="Smith" autocomplete="family-name" required>
           </div>
         </div>
         <div class="field">
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="john@company.com" autocomplete="email">
+          <input type="email" id="email" name="email" placeholder="john@company.com" autocomplete="email" required>
         </div>
         <div class="field">
           <label for="biz">Business Name</label>
-          <input type="text" id="biz" placeholder="Your Company">
+          <input type="text" id="biz" name="business_name" placeholder="Your Company">
         </div>
         <div class="field">
           <label for="msg">What are you looking to accomplish?</label>
-          <textarea id="msg" rows="4" placeholder="Tell us about your business and goals..."></textarea>
+          <textarea id="msg" name="message" rows="4" placeholder="Tell us about your business and goals..."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center">
+        <button type="submit" id="contact-submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center">
           Send Message
           <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
+        <div id="contact-success" style="display:none;text-align:center;padding:var(--sp-6);
+          background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.25);
+          border-radius:var(--r-md);color:#4ADE80;font-family:'Bricolage Grotesque',sans-serif;
+          font-weight:600;font-size:var(--fs-base);">
+          ✓ Message sent! We'll be in touch within one business day.
+        </div>
+        <div id="contact-error" style="display:none;text-align:center;padding:var(--sp-6);
+          background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);
+          border-radius:var(--r-md);color:#F87171;font-family:'Bricolage Grotesque',sans-serif;
+          font-weight:600;font-size:var(--fs-base);">
+          Something went wrong. Please try again or email us directly.
+        </div>
       </form>
     </div>
   </div>
@@ -1312,6 +1324,42 @@
       requestAnimationFrame(frame);
     }
     frame();
+  })();
+
+  /* ── CONTACT FORM (Formspree async) ── */
+  (function(){
+    const form    = document.getElementById('contact-form');
+    const btn     = document.getElementById('contact-submit');
+    const success = document.getElementById('contact-success');
+    const error   = document.getElementById('contact-error');
+    if(!form) return;
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      success.style.display = 'none';
+      error.style.display   = 'none';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if(res.ok) {
+          form.reset();
+          success.style.display = 'block';
+          btn.style.display = 'none';
+        } else {
+          throw new Error('non-ok');
+        }
+      } catch {
+        error.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = 'Send Message <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+      }
+    });
   })();
 
   /* ── HERO HEADLINE GOOEY MORPH ROTATOR (21st.dev port) ── */
